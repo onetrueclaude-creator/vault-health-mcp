@@ -27,6 +27,13 @@ def main():
     else:
         print("vault-health-mcp: starting without vault (use configure_vault tool to set path)", file=sys.stderr)
 
+    if args.transport == "streamable-http":
+        port = int(os.environ.get("PORT") or args.port)
+        mcp_server.settings.host = "0.0.0.0"
+        mcp_server.settings.port = port
+        mcp_server.settings.stateless_http = True
+        print(f"vault-health-mcp: binding streamable-http on 0.0.0.0:{port} (stateless)", file=sys.stderr)
+
     mcp_server.run(transport=args.transport)
 
 
