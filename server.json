@@ -1,0 +1,39 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.onetrueclaude-creator/vault-health-mcp",
+  "description": "Obsidian vault structural health: broken links, orphans, missing frontmatter, safe auto-repair.",
+  "repository": {
+    "url": "https://github.com/onetrueclaude-creator/vault-health-mcp",
+    "source": "github"
+  },
+  "version": "0.2.0",
+  "packages": [
+    {
+      "registryType": "pypi",
+      "identifier": "vault-health-mcp",
+      "version": "0.2.0",
+      "runtimeHint": "uvx",
+      "transport": {
+        "type": "stdio"
+      },
+      "packageArguments": [
+        {
+          "type": "named",
+          "name": "--vault",
+          "description": "Absolute path to your Obsidian vault directory. Optional — can also be set at runtime via the configure_vault tool.",
+          "isRequired": false,
+          "format": "string"
+        }
+      ],
+      "environmentVariables": [
+        {
+          "name": "VAULT_HEALTH_LICENSE",
+          "description": "Pro license JWT (optional). Unlocks the repair_vault auto-fix tool. See the README for details.",
+          "isRequired": false,
+          "isSecret": true,
+          "format": "string"
+        }
+      ]
+    }
+  ]
+}

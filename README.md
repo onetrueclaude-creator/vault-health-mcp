@@ -1,3 +1,5 @@
+<!-- mcp-name: io.github.onetrueclaude-creator/vault-health-mcp -->
+
 # vault-health-mcp
 
 **MCP server for Obsidian vault structural health checks.**
