@@ -5,8 +5,16 @@ from mcp.server.fastmcp import FastMCP
 from starlette.requests import Request
 from starlette.responses import JSONResponse
 from .checker import check_health, auto_repair, vault_stats, scan_vault
+from .license import License, require_feature_error
 
 _vault_path: str = ""
+_license: License | None = None
+
+
+def set_license(license: License | None) -> None:
+    """Called by __main__.py after loading the license, before server.run()."""
+    global _license
+    _license = license
 
 mcp_server = FastMCP(
     "vault-health",
@@ -68,8 +76,10 @@ def tool_check_health() -> str:
 
 @mcp_server.tool(name="repair_vault", annotations={"readOnlyHint": False, "destructiveHint": False})
 def tool_repair(fix_broken_links: bool = True, fix_frontmatter: bool = True) -> str:
-    """Auto-repair safe structural issues. Only adds content (frontmatter, plain text
-    replacements for broken links). Never deletes files or content."""
+    """[Pro] Auto-repair safe structural issues. Only adds content (frontmatter, plain text
+    replacements for broken links). Never deletes files or content. Requires Pro license."""
+    if _license is None or not _license.has_feature("auto_repair"):
+        return json.dumps(require_feature_error("auto_repair"), indent=2)
     if not _vault_path:
         return _not_ready()
     issues = check_health(_vault_path)

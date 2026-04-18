@@ -11,11 +11,17 @@ def main():
     )
     parser.add_argument("--vault", "-v", default=None,
                         help="Path to Obsidian vault (optional — can be configured later via configure_vault tool)")
+    parser.add_argument("--license-key", default=None,
+                        help="Pro license key (JWT). Overrides VAULT_HEALTH_LICENSE env var and ~/.vault-health-mcp/license.jwt")
     parser.add_argument("--transport", choices=["stdio", "streamable-http"], default="stdio")
     parser.add_argument("--port", type=int, default=8001)
     args = parser.parse_args()
 
-    from .server import mcp_server, init
+    from .license import load_license
+    license = load_license(args.license_key)
+
+    from .server import mcp_server, init, set_license
+    set_license(license)
 
     if args.vault:
         vault_path = os.path.expanduser(args.vault)
@@ -26,6 +32,10 @@ def main():
         print(f"vault-health-mcp: serving {vault_path}", file=sys.stderr)
     else:
         print("vault-health-mcp: starting without vault (use configure_vault tool to set path)", file=sys.stderr)
+
+    if license:
+        print(f"vault-health-mcp: Pro license active (plan={license.plan}, sub={license.subject})",
+              file=sys.stderr)
 
     if args.transport == "streamable-http":
         port = int(os.environ.get("PORT") or args.port)

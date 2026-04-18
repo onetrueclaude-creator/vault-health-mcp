@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "vault-health-mcp"
-version = "0.1.5"
+version = "0.2.0"
 description = "MCP server for Obsidian vault structural health checks. Find broken links, orphaned notes, missing frontmatter — and auto-repair them."
 readme = "README.md"
 license = "MIT"
@@ -21,6 +21,8 @@ classifiers = [
 dependencies = [
     "mcp>=1.20.0",
     "pyyaml>=6.0",
+    "pyjwt>=2.8.0",
+    "cryptography>=41.0.0",
 ]
 
 [project.scripts]
