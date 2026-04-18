@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "vault-health-mcp"
-version = "0.1.1"
+version = "0.1.2"
 description = "MCP server for Obsidian vault structural health checks. Find broken links, orphaned notes, missing frontmatter — and auto-repair them."
 readme = "README.md"
 license = "MIT"
