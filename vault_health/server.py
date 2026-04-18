@@ -2,6 +2,8 @@
 import json
 import os
 from mcp.server.fastmcp import FastMCP
+from starlette.requests import Request
+from starlette.responses import JSONResponse
 from .checker import check_health, auto_repair, vault_stats, scan_vault
 
 _vault_path: str = ""
@@ -13,6 +15,11 @@ mcp_server = FastMCP(
     "Works with any Obsidian vault — no plugins required. "
     "If the server starts without a vault path, use the configure_vault tool first.",
 )
+
+
+@mcp_server.custom_route("/health", methods=["GET"])
+async def health_check(request: Request) -> JSONResponse:
+    return JSONResponse({"status": "healthy"})
 
 
 def init(vault_path: str):
